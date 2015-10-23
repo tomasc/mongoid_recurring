@@ -18,9 +18,12 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "activesupport", "> 3.0"
+  spec.add_dependency "ice_cube"
   spec.add_dependency "mongoid", "~> 5.0"
+  spec.add_dependency "mongoid_ice_cube_extension", ">= 0.1.1"
 
-  spec.add_development_dependency "bundler", "~> 1.9"
+  spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "coveralls"
   spec.add_development_dependency "database_cleaner"
   spec.add_development_dependency "guard"

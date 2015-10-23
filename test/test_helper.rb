@@ -3,8 +3,8 @@ require 'database_cleaner'
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/spec'
-require 'mongoid'
 
+require 'mongoid'
 require 'mongoid_recurring'
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
@@ -24,4 +24,12 @@ DatabaseCleaner.strategy = :truncation
 class MiniTest::Spec
   before(:each) { DatabaseCleaner.start }
   after(:each) { DatabaseCleaner.clean }
+end
+
+# ---------------------------------------------------------------------
+
+class MyDocument
+  include Mongoid::Document
+  include MongoidRecurring::HasRecurringFields
+  has_recurring_fields
 end

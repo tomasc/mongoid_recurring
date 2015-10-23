@@ -1,5 +1,7 @@
-require "mongoid_recurring/version"
+require 'active_support/core_ext/date'
+require 'active_support/core_ext/date_time'
 
-module MongoidRecurring
-  # Your code goes here...
-end
+require "mongoid_recurring/occurence"
+require "mongoid_recurring/has_recurring_fields"
+
+require "mongoid_recurring/version"

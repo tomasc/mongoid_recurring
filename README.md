@@ -2,7 +2,11 @@
 
 [![Build Status](https://travis-ci.org/tomasc/mongoid_recurring.svg)](https://travis-ci.org/tomasc/mongoid_recurring) [![Gem Version](https://badge.fury.io/rb/mongoid_recurring.svg)](http://badge.fury.io/rb/mongoid_recurring) [![Coverage Status](https://img.shields.io/coveralls/tomasc/mongoid_recurring.svg)](https://coveralls.io/r/tomasc/mongoid_recurring)
 
-Recurring date time fields for Mongoid models.
+Recurring date time fields for Mongoid models, using [IceCube](https://github.com/seejohnrun/ice_cube/).
+
+When included in a model, this gem expands the recurring rules set of an `IceCube` schedule on save into an array of embedded `MongoidRecurring::Occurence` models.
+
+It also adds definitions of several scopes that allow for convenient querying of models stored in the db.
 
 ## Installation
 
@@ -22,7 +26,29 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+  class MyModel
+    include Mongoid::Document
+    include MongoidRecurring::HasRecurringFields
+    has_recurring_fields
+  end
+```
+
+Which will then add `dtstart`, `dtend`, `all_day`, `schedule` and `schedule_dtend` fields to the model.
+
+The model will generate all occurrences on before save, and stores them as embedded `MongoidRecurring::Occurrence` documents in the `:occurrences` embedded relation.
+
+A scope named `.for_datetime_range` can be then used to query for documents with occurrences in specified DateTime range:
+
+```ruby
+  MyModel.for_datetime_range( Date.today, Date.today+1.week )
+```
+
+## Configuration
+
+By default, when `schedule_dtend` is not specified, the `:occurrences` are populated for 1 year in advance. This duration can be configured as follows:
+
+  has_recurring_fields schedule_duration: 2.weeks
 
 ## Development
 
