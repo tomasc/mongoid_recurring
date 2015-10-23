@@ -45,7 +45,7 @@ module MongoidRecurring
     end
 
     def occurrences_from_schedule
-      schedule.occurrences(schedule_dtend || (schedule.start_time + @@schedule_duration)).collect { |o| MongoidRecurring::Occurence.new( dtstart: o.start_time, dtend: o.end_time ) }
+      schedule.occurrences(schedule_dtend || (schedule.start_time + @@schedule_duration)).collect { |o| MongoidRecurring::Occurence.new( dtstart: o.start_time, dtend: o.end_time, all_day: all_day ) }
     end
 
     def occurrences_from_model
