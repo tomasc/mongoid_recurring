@@ -5,11 +5,9 @@ module MongoidRecurring
   module HasRecurringFields
 
     def self.included base
-
       base.extend ClassMethods
       base.class_eval do
         @@schedule_duration = 1.year
-        attr_accessor :recurring_rules
       end
     end
 
