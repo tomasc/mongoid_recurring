@@ -27,11 +27,11 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-  class MyModel
-    include Mongoid::Document
-    include MongoidRecurring::HasRecurringFields
-    has_recurring_fields
-  end
+class MyModel
+  include Mongoid::Document
+  include MongoidRecurring::HasRecurringFields
+  has_recurring_fields
+end
 ```
 
 Which will then add `dtstart`, `dtend`, `all_day`, `schedule` and `schedule_dtend` fields to the model.
@@ -41,7 +41,7 @@ The model will generate all occurrences on before save, and stores them as embed
 A scope named `.for_datetime_range` can be then used to query for documents with occurrences in specified DateTime range:
 
 ```ruby
-  MyModel.for_datetime_range( Date.today, Date.today+1.week )
+MyModel.for_datetime_range( Date.today, Date.today+1.week )
 ```
 
 ## Configuration
