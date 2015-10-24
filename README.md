@@ -46,7 +46,7 @@ MyModel.for_datetime_range( Date.today, Date.today+1.week )
 
 ## Configuration
 
-By default, when `schedule_dtend` is not specified, the `:occurrences` are populated for 1 year in advance. This duration can be configured as follows:
+By default, when `schedule_dtend` is not specified, the `occurrences` are populated for 1 year in advance. This duration can be configured as follows:
 
   has_recurring_fields schedule_duration: 2.weeks
 
