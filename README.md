@@ -36,7 +36,7 @@ end
 
 Which will then add `dtstart`, `dtend`, `all_day`, `schedule` and `schedule_dtend` fields to the model.
 
-The model will generate all occurrences on before save, and stores them as embedded `MongoidRecurring::Occurrence` documents in the `:occurrences` embedded relation.
+The model will generate all occurrences on before save, and store them as `MongoidRecurring::Occurrence` documents in the `:occurrences` embedded relation.
 
 A scope named `.for_datetime_range` can be then used to query for documents with occurrences in specified DateTime range:
 
