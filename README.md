@@ -50,6 +50,11 @@ By default, when `schedule_dtend` is not specified, the `occurrences` are popula
 
   has_recurring_fields schedule_duration: 2.weeks
 
+## See also
+
+* [MongoidIceCubeExtension](https://github.com/tomasc/mongoid_ice_cube_extension) for storing `IceCube` schedule in Mongoid documents
+* [SimpleFormRecurringSelect](https://github.com/tomasc/simple_form_recurring_select) for adding `IceCube` rules via `SimpleForm` input fields
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
