@@ -31,11 +31,11 @@ module MongoidRecurring
       before { doc.run_callbacks(:save) }
 
       it 'adjusts dtstart to beginning of day' do
-        doc.dtstart.must_equal dtstart.beginning_of_day
+        doc.dtstart.must_equal doc.dtstart.beginning_of_day
       end
 
       it 'adjusts dtend to end of day' do
-        doc.dtend.must_equal dtend.end_of_day
+        doc.dtend.must_equal doc.dtend.end_of_day
       end
     end
   end
