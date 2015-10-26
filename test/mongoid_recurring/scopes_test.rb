@@ -11,15 +11,19 @@ module MongoidRecurring
       end
     }
 
-    subject { MyDocument.new( dtstart: today, schedule: ice_cube_schedule ) }
+    let(:all_day_event) { MyDocument.new( dtstart: today, schedule: ice_cube_schedule, all_day: true ) }
+    let(:regular_event) { MyDocument.new( dtstart: DateTime.parse('22/10/2015 13:30'), dtend: DateTime.parse('22/10/2015 15:30') ) }
 
     # =====================================================================
 
-    describe 'occurrences' do
-      before { subject.run_callbacks(:save) }
+    describe 'one day occurrences' do
+      before {
+        all_day_event.run_callbacks(:save)
+        regular_event.run_callbacks(:save)
+      }
 
-      it 'stores occurrences' do
-        subject.occurrences.map(&:dtstart).map(&:to_date).must_equal [
+      it 'stores occurrences for one day' do
+        all_day_event.occurrences.map(&:dtstart).map(&:to_date).must_equal [
           Date.parse('22/09/2015'),
           Date.parse('29/09/2015'),
           Date.parse('06/10/2015'),
@@ -32,18 +36,56 @@ module MongoidRecurring
           Date.parse('24/11/2015'),
         ]
       end
+
+      it 'stores occurrences that span' do
+        regular_event.occurrences.map{ |o| [o.dtstart, o.dtend] }.must_equal [
+          [ DateTime.parse('22/10/2015 13:30'), DateTime.parse('22/10/2015 15:30') ]
+        ]
+      end
     end
 
     # =====================================================================
 
-    describe '.for_datetime_range' do
-      before { subject.save! }
+    describe 'simple scopes' do
+      before { all_day_event.save! }
 
-      it { MyDocument.for_datetime_range( Date.parse('21/09/2015'), Date.parse('23/09/2015') ).first.must_equal subject }
-      it { MyDocument.for_datetime_range( Date.parse('20/10/2015'), Date.parse('23/11/2015') ).first.must_equal subject }
+      describe '.for_datetime_range' do
+        it { MyDocument.for_datetime_range( Date.parse('21/09/2015'), Date.parse('23/09/2015') ).first.must_equal all_day_event }
+        it { MyDocument.for_datetime_range( Date.parse('20/10/2015'), Date.parse('23/11/2015') ).first.must_equal all_day_event }
+        it { MyDocument.for_datetime_range( Date.parse('23/09/2015'), Date.parse('28/09/2015') ).first.must_be_nil }
+      end
 
-      it { MyDocument.for_datetime_range( Date.parse('23/09/2015'), Date.parse('28/09/2015') ).first.must_be_nil }
+      describe '.from_datetime' do
+        it { MyDocument.from_datetime( Date.parse('22/08/2015') ).first.must_equal all_day_event }
+        it { MyDocument.from_datetime( Date.parse('29/09/2015') ).first.must_equal all_day_event }
+        it { MyDocument.from_datetime( Date.parse('22/10/2015') ).first.must_equal all_day_event }
+        it { MyDocument.from_datetime( Date.parse('24/11/2015') ).first.must_equal all_day_event }
+        it { MyDocument.from_datetime( Date.parse('25/11/2015') ).first.must_be_nil }
+      end
+
+      describe '.to_datetime' do
+        it { MyDocument.to_datetime( Date.parse('21/09/2015') ).first.must_be_nil }
+        it { MyDocument.to_datetime( Date.parse('29/09/2015') ).first.must_equal all_day_event }
+        it { MyDocument.to_datetime( Date.parse('22/10/2015') ).first.must_equal all_day_event }
+        it { MyDocument.to_datetime( Date.parse('24/11/2015') ).first.must_equal all_day_event }
+        it { MyDocument.to_datetime( Date.parse('25/11/2015') ).first.must_equal all_day_event }
+      end
     end
 
+    describe 'overlapping scopes' do
+      before { regular_event.save! }
+
+      describe '.for_datetime_range' do
+        it { MyDocument.for_datetime_range( DateTime.parse('22/10/2015 13:31'), DateTime.parse('22/10/2015 15:29') ).first.must_equal regular_event }
+        it { MyDocument.for_datetime_range( DateTime.parse('22/10/2015 13:30'), DateTime.parse('22/10/2015 15:30') ).first.must_equal regular_event }
+        it { MyDocument.for_datetime_range( DateTime.parse('22/10/2015 13:29'), DateTime.parse('22/10/2015 15:31') ).first.must_equal regular_event }
+
+        it { MyDocument.for_datetime_range( DateTime.parse('22/10/2015 13:29'), DateTime.parse('22/10/2015 15:29') ).first.must_equal regular_event }
+        it { MyDocument.for_datetime_range( DateTime.parse('22/10/2015 13:31'), DateTime.parse('22/10/2015 15:31') ).first.must_equal regular_event }
+
+        it { MyDocument.for_datetime_range( DateTime.parse('22/10/2015 15:31'), DateTime.parse('22/10/2015 15:32') ).first.must_be_nil }
+        it { MyDocument.for_datetime_range( DateTime.parse('22/10/2015 13:28'), DateTime.parse('22/10/2015 13:29') ).first.must_be_nil }
+      end
+    end
   end
 end

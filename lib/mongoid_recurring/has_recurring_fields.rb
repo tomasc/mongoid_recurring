@@ -24,14 +24,30 @@ module MongoidRecurring
         field :schedule, type: MongoidIceCubeExtension::Schedule
         field :schedule_dtend, type: DateTime
 
+        # ---------------------------------------------------------------------
+
         embeds_many :occurrences, class_name: 'MongoidRecurring::Occurence', order: :dtstart.asc
 
         validates :dtstart, presence: true
 
         before_save :expand_schedule_to_occurrences
 
+        # ---------------------------------------------------------------------
+
         scope :for_datetime_range, -> (dtstart, dtend) {
-          where( occurrences: { "$elemMatch" => { :dtstart.gte => dtstart.to_datetime, :dtend.lte => dtend.to_datetime } } )
+          dtstart = dtstart.beginning_of_day if dtstart.instance_of?(Date)
+          dtend = dtend.end_of_day if dtend.instance_of?(Date)
+          where({ occurrences: { "$elemMatch" => { :dtstart.lte => dtend.to_datetime, :dtend.gte => dtstart.to_datetime } } })
+        }
+
+        scope :from_datetime, -> (dtstart) {
+          dtstart = dtstart.beginning_of_day if dtstart.instance_of?(Date)
+          where( occurrences: { "$elemMatch" => { :dtstart.gte => dtstart.to_datetime } } )
+        }
+
+        scope :to_datetime, -> (dtend) {
+          dtend = dtend.end_of_day if dtend.instance_of?(Date)
+          where( occurrences: { "$elemMatch" => { :dtend.lte => dtend.to_datetime } } )
         }
       end
     end
