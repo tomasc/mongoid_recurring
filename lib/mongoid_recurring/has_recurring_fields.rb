@@ -35,19 +35,15 @@ module MongoidRecurring
         # ---------------------------------------------------------------------
 
         scope :for_datetime_range, -> (dtstart, dtend) {
-          dtstart = dtstart.beginning_of_day if dtstart.instance_of?(Date)
-          dtend = dtend.end_of_day if dtend.instance_of?(Date)
-          where({ occurrences: { "$elemMatch" => { :dtstart.lte => dtend.to_datetime, :dtend.gte => dtstart.to_datetime } } })
+          where({ occurrences: { "$elemMatch" => Occurence.for_datetime_range(dtstart, dtend).selector } })
         }
 
         scope :from_datetime, -> (dtstart) {
-          dtstart = dtstart.beginning_of_day if dtstart.instance_of?(Date)
-          where( occurrences: { "$elemMatch" => { :dtstart.gte => dtstart.to_datetime } } )
+          where( occurrences: { "$elemMatch" => Occurence.from_datetime(dtstart).selector } )
         }
 
         scope :to_datetime, -> (dtend) {
-          dtend = dtend.end_of_day if dtend.instance_of?(Date)
-          where( occurrences: { "$elemMatch" => { :dtend.lte => dtend.to_datetime } } )
+          where( occurrences: { "$elemMatch" => Occurence.to_datetime(dtend).selector } )
         }
       end
     end

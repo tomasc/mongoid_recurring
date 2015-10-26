@@ -17,6 +17,24 @@ module MongoidRecurring
     before_save :set_dtend
     before_save :adjust_dates_for_all_day
 
+    # ---------------------------------------------------------------------
+
+    scope :for_datetime_range, -> (dtstart, dtend) {
+      dtstart = dtstart.beginning_of_day if dtstart.instance_of?(Date)
+      dtend = dtend.end_of_day if dtend.instance_of?(Date)
+      where( :dtstart.lte => dtend.to_datetime, :dtend.gte => dtstart.to_datetime )
+    }
+
+    scope :from_datetime, -> (dtstart) {
+      dtstart = dtstart.beginning_of_day if dtstart.instance_of?(Date)
+      where( :dtstart.gte => dtstart.to_datetime )
+    }
+
+    scope :to_datetime, -> (dtend) {
+      dtend = dtend.end_of_day if dtend.instance_of?(Date)
+      where( :dtend.lte => dtend.to_datetime )
+    }
+
     # =====================================================================
 
     def all_day?
