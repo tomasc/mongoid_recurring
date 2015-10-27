@@ -1,12 +1,12 @@
 require 'test_helper'
 
 module MongoidRecurring
-  describe Occurence do
+  describe Occurrence do
 
     let(:dtstart) { DateTime.now }
     let(:dtend) { dtstart + 1.day }
 
-    subject { Occurence.new }
+    subject { Occurrence.new }
 
     it { subject.must_respond_to :dtstart }
     it { subject.must_respond_to :dtend }
@@ -14,7 +14,7 @@ module MongoidRecurring
     # ---------------------------------------------------------------------
 
     describe 'when dtend not specified' do
-      let(:doc) { Occurence.new(dtstart: dtstart) }
+      let(:doc) { Occurrence.new(dtstart: dtstart) }
 
       before { doc.run_callbacks(:save) }
 
@@ -26,7 +26,7 @@ module MongoidRecurring
     # ---------------------------------------------------------------------
 
     describe 'when all_day' do
-      let(:doc) { Occurence.new(dtstart: dtstart, dtend: dtend, all_day: true) }
+      let(:doc) { Occurrence.new(dtstart: dtstart, dtend: dtend, all_day: true) }
 
       before { doc.run_callbacks(:save) }
 

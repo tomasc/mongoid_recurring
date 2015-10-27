@@ -1,10 +1,10 @@
-# MongoidRecurring
+# Mongoid Recurring
 
 [![Build Status](https://travis-ci.org/tomasc/mongoid_recurring.svg)](https://travis-ci.org/tomasc/mongoid_recurring) [![Gem Version](https://badge.fury.io/rb/mongoid_recurring.svg)](http://badge.fury.io/rb/mongoid_recurring) [![Coverage Status](https://img.shields.io/coveralls/tomasc/mongoid_recurring.svg)](https://coveralls.io/r/tomasc/mongoid_recurring)
 
 Recurring date time fields for Mongoid models, using [IceCube](https://github.com/seejohnrun/ice_cube/).
 
-When included in a model, this gem expands the recurring rules set of an `IceCube` schedule on save into an array of embedded `MongoidRecurring::Occurence` models.
+When included in a model, this gem expands the recurring rules set of an `IceCube` schedule on save into an array of embedded `MongoidRecurring::Occurrence` models.
 
 It also adds definitions of several scopes that allow for convenient querying of models stored in the db.
 

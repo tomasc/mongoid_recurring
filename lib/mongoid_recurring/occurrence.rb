@@ -1,7 +1,7 @@
 require 'mongoid'
 
 module MongoidRecurring
-  class Occurence
+  class Occurrence
     include Mongoid::Document
 
     field :dtstart, type: DateTime
@@ -9,7 +9,7 @@ module MongoidRecurring
 
     attr_accessor :all_day
 
-    embedded_in :schedule, class_name: 'MongoidRecurring::Occurence'
+    embedded_in :schedule, class_name: 'MongoidRecurring::Occurrence'
 
     validates :dtstart, presence: true
     validates :dtend, presence: true

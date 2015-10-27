@@ -26,7 +26,7 @@ module MongoidRecurring
 
         # ---------------------------------------------------------------------
 
-        embeds_many :occurrences, class_name: 'MongoidRecurring::Occurence', order: :dtstart.asc
+        embeds_many :occurrences, class_name: 'MongoidRecurring::Occurrence', order: :dtstart.asc
 
         validates :dtstart, presence: true
 
@@ -35,15 +35,15 @@ module MongoidRecurring
         # ---------------------------------------------------------------------
 
         scope :for_datetime_range, -> (dtstart, dtend) {
-          where({ occurrences: { "$elemMatch" => Occurence.for_datetime_range(dtstart, dtend).selector } })
+          where({ occurrences: { "$elemMatch" => Occurrence.for_datetime_range(dtstart, dtend).selector } })
         }
 
         scope :from_datetime, -> (dtstart) {
-          where( occurrences: { "$elemMatch" => Occurence.from_datetime(dtstart).selector } )
+          where( occurrences: { "$elemMatch" => Occurrence.from_datetime(dtstart).selector } )
         }
 
         scope :to_datetime, -> (dtend) {
-          where( occurrences: { "$elemMatch" => Occurence.to_datetime(dtend).selector } )
+          where( occurrences: { "$elemMatch" => Occurrence.to_datetime(dtend).selector } )
         }
       end
     end
@@ -55,11 +55,11 @@ module MongoidRecurring
     end
 
     def occurrences_from_schedule
-      schedule.occurrences(schedule_dtend || (schedule.start_time + @@schedule_duration)).collect { |o| MongoidRecurring::Occurence.new( dtstart: o.start_time, dtend: o.end_time, all_day: all_day ) }
+      schedule.occurrences(schedule_dtend || (schedule.start_time + @@schedule_duration)).collect { |o| MongoidRecurring::Occurrence.new( dtstart: o.start_time, dtend: o.end_time, all_day: all_day ) }
     end
 
     def occurrences_from_model
-      [ MongoidRecurring::Occurence.new( dtstart: dtstart, dtend: dtend, all_day: all_day ) ]
+      [ MongoidRecurring::Occurrence.new( dtstart: dtstart, dtend: dtend, all_day: all_day ) ]
     end
 
   end
