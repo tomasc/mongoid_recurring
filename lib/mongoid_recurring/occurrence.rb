@@ -37,6 +37,14 @@ module MongoidRecurring
 
     # =====================================================================
 
+    def <=> other
+      sort_key <=> other.sort_key
+    end
+
+    def sort_key
+      dtstart
+    end
+
     def all_day?
       self.all_day == true
     end
