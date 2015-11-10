@@ -18,6 +18,9 @@ Mongoid.configure do |config|
   config.connect_to('mongoid_recurring_test')
 end
 
+Mongoid.logger.level = Logger::INFO
+Mongo::Logger.logger.level = Logger::INFO
+
 DatabaseCleaner.orm = :mongoid
 DatabaseCleaner.strategy = :truncation
 
