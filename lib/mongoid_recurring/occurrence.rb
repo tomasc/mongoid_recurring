@@ -9,7 +9,7 @@ module MongoidRecurring
 
     attr_accessor :all_day
 
-    embedded_in :schedule, class_name: 'MongoidRecurring::Occurrence'
+    embedded_in :schedule, class_name: 'MongoidRecurring::Occurrence', touch: true
 
     validates :dtstart, presence: true
     validates :dtend, presence: true
