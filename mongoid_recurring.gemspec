@@ -6,7 +6,7 @@ require 'mongoid_recurring/version'
 Gem::Specification.new do |spec|
   spec.name          = 'mongoid_recurring'
   spec.version       = MongoidRecurring::VERSION
-  spec.authors       = ["Tom\u00E1\u0161 Celizna"]
+  spec.authors       = ['Tomas Celizna']
   spec.email         = ['tomas.celizna@gmail.com']
 
   spec.summary       = 'Recurring date time fields for Mongoid models.'
