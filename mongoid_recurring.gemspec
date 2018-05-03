@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'activesupport', '> 3.0'
   spec.add_dependency 'ice_cube'
-  spec.add_dependency 'mongoid', '>= 5.1', '<= 7'
+  spec.add_dependency 'mongoid', '>= 5.1', '< 8'
   spec.add_dependency 'mongoid_ice_cube_extension', '>= 0.1.1'
 
   spec.add_development_dependency 'bundler', '~> 1.6'
