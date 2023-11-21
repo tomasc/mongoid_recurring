@@ -15,12 +15,12 @@ module MongoidRecurring
 
     # ---------------------------------------------------------------------
 
-    it { subject.must_respond_to :dtstart }
-    it { subject.must_respond_to :dtend }
-    it { subject.must_respond_to :all_day }
-    it { subject.must_respond_to :schedule }
+    it { _(subject).must_respond_to :dtstart }
+    it { _(subject).must_respond_to :dtend }
+    it { _(subject).must_respond_to :all_day }
+    it { _(subject).must_respond_to :schedule }
 
-    it { subject.must_respond_to :occurrences }
+    it { _(subject).must_respond_to :occurrences }
 
     # =====================================================================
 
@@ -28,7 +28,7 @@ module MongoidRecurring
       before { subject.run_callbacks(:save) }
 
       it 'expands schedule to occurrences' do
-        subject.occurrences.must_be :present?
+        _(subject.occurrences).must_be :present?
       end
     end
 
@@ -39,7 +39,7 @@ module MongoidRecurring
       before { doc.run_callbacks(:save) }
 
       it 'stores recurrence based on dtsart & dtend' do
-        doc.occurrences.length.must_equal 1
+        _(doc.occurrences.length).must_equal 1
       end
     end
 

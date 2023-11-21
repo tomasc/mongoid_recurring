@@ -8,8 +8,8 @@ module MongoidRecurring
 
     subject { Occurrence.new }
 
-    it { subject.must_respond_to :dtstart }
-    it { subject.must_respond_to :dtend }
+    it { _(subject).must_respond_to :dtstart }
+    it { _(subject).must_respond_to :dtend }
 
     # ---------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ module MongoidRecurring
       before { doc.run_callbacks(:save) }
 
       it 'sets it to dtend' do
-        doc.dtend.must_equal doc.dtstart
+        _(doc.dtend).must_equal doc.dtstart
       end
     end
 
@@ -31,11 +31,11 @@ module MongoidRecurring
       before { doc.run_callbacks(:save) }
 
       it 'adjusts dtstart to beginning of day' do
-        doc.dtstart.must_equal doc.dtstart.beginning_of_day
+        _(doc.dtstart).must_equal doc.dtstart.beginning_of_day
       end
 
       it 'adjusts dtend to end of day' do
-        doc.dtend.must_equal doc.dtend.end_of_day
+        _(doc.dtend).must_equal doc.dtend.end_of_day
       end
     end
   end

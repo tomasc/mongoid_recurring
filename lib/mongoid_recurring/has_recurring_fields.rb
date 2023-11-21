@@ -19,7 +19,7 @@ module MongoidRecurring
 
         field :dtstart, type: DateTime
         field :dtend, type: DateTime
-        field :all_day, type: Boolean, default: false
+        field :all_day, type: Mongoid::Boolean, default: false
 
         field :schedule, type: MongoidIceCubeExtension::Schedule
         field :schedule_dtend, type: DateTime
